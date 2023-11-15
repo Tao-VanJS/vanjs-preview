@@ -15,16 +15,25 @@ Deno.serve(async req => {
   if (req.method === "POST" && GEN_PREVIEW_URL_PATTERN.test(req.url)) {
     const data = await req.text()
     const key = randomKey()
-    // console.log({key, data})
+    console.log({key, data})
     kv.set([key], data, {expireIn: 86400 * 1000})
-    return new Response("https://vanjs-preview.deno.dev/" + key)
+    return new Response(
+      "https://vanjs-preview.deno.dev/" + key,
+      {
+        status: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+        },
+      },
+    )
   }
 
   const match = PREVIEW_PATTERN.exec(req.url)
   if (match) {
     const key = match.pathname.groups.key!
     const {value} = await kv.get<string>([key])
-    // console.log({key, value})
+    console.log({key, value})
     if (!value) return new Response("Invalid or expired link", {status: 404})
     const data = {
       ...JSON.parse(value),

@@ -1,0 +1,37 @@
+openapi: 3.0.0
+info:
+  title: Generate a link to preview the web app
+  version: 0.1.0
+servers:
+  - url: https://vanjs-preview.deno.dev
+paths:
+  /gen-preview-url:
+    post:
+      summary: Generate a link to preview the web app based on uploaded JavaScript and CSS code (CSS code is optional)
+      operationId: genPreviewUrl
+      description: This endpoint receives 2 string parameters `js` and `css`, for the respective JavaScript and CSS code of the web app, and returns a single string as the URL that can be used to preview the app.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                js:
+                  type: string
+                  description: The JavaScript code of the app
+                css:
+                  type: string
+                  description: The (optional) CSS code of the app
+              required:
+                - js
+      response:
+        '200':
+          description: Successful response with a string value for the URL used to preview the app
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: URL to preview the app
+        default:
+          description: unexpected error
