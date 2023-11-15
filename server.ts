@@ -12,18 +12,32 @@ const escapeAttr = (v: string) => v.replaceAll('"', "&quot;")
 const template = await Deno.readTextFile("./template.html")
 
 Deno.serve(async req => {
+  if (req.method === "OPTIONS") {
+    console.log("Handling OPTIONS request")
+    return new Response(
+      null,
+      {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+        },
+      },
+    )
+  }
   if (req.method === "POST" && GEN_PREVIEW_URL_PATTERN.test(req.url)) {
     const data = await req.text()
     const key = randomKey()
     console.log({key, data})
     kv.set([key], data, {expireIn: 86400 * 1000})
     return new Response(
-      "https://vanjs-preview.deno.dev/" + key,
+      JSON.stringify("https://vanjs-preview.deno.dev/" + key),
       {
         status: 200,
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+          "Content-Type": "text/json; charset=utf-8",
         },
       },
     )
