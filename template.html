@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Redirecting...</title>
+</head>
+<body onload="document.getElementById('redirectForm').submit();">
+  <form id="redirectForm" action="https://codepen.io/pen/define" method="POST">
+    <input type="hidden" name="data" value={{value}}>
+  </form>
+  <script>
+    window.onload = function () {
+      document.getElementById('redirectForm').submit();
+    }
+  </script>
+</body>
+</html>
