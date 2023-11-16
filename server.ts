@@ -3,6 +3,7 @@
 const GEN_PREVIEW_URL_PATTERN = new URLPattern({pathname: "/gen-preview-url"})
 const JSFIDDLE_PREVIEW_PATTERN = new URLPattern({pathname: "/jsfiddle/:key"})
 const CODEPEN_PREVIEW_PATTERN = new URLPattern({pathname: "/codepen/:key"})
+const PRIVACY_PATTERN = new URLPattern({pathname: "/privacy"})
 
 const kv = await Deno.openKv()
 
@@ -20,6 +21,7 @@ const escapeAttr = (v: string) => v.replaceAll('"', "&quot;")
 
 const jsfiddleTemplate = await Deno.readTextFile("./jsfiddle-template.html")
 const template = await Deno.readTextFile("./template.html")
+const privacy = await Deno.readTextFile("./privacy")
 
 Deno.serve(async req => {
   if (req.method === "OPTIONS") {
@@ -34,6 +36,9 @@ Deno.serve(async req => {
         },
       },
     )
+  }
+  if (req.method === "GET" && PRIVACY_PATTERN.test(req.url)) {
+    return new Response(privacy)
   }
   if (req.method === "POST" && GEN_PREVIEW_URL_PATTERN.test(req.url)) {
     const data = await req.text()
