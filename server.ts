@@ -40,8 +40,9 @@ Deno.serve(async req => {
     const key = randomKey()
     console.log({key, data})
     kv.set([key], data, {expireIn: 86400 * 1000})
+    const url = new URL(req.url)
     return new Response(
-      JSON.stringify("https://vanjs-preview.deno.dev/jsfiddle/" + key),
+      JSON.stringify(`https://${url.hostname}/jsfiddle/${key}`),
       {
         status: 200,
         headers: {
@@ -63,7 +64,8 @@ Deno.serve(async req => {
       return new Response(
         jsfiddleTemplate
           .replace("{{js}}", escapeText(json.js ?? ""))
-          .replace("{{css}}", escapeText(json.css ?? "")),
+          .replace("{{css}}", escapeText(json.css ?? ""))
+          .replace("{{html}}", escapeText(json.html ?? "")),
         {status: 200, headers: {"Content-Type": "text/html; charset=utf-8"}},
       )
     }

@@ -3,13 +3,13 @@ info:
   title: Generate a link to preview the web app
   version: 0.1.0
 servers:
-  - url: https://vanjs-preview.deno.dev
+  - url: https://api.vanjs.org
 paths:
   /gen-preview-url:
     post:
-      summary: Generate a link to preview the web app based on uploaded JavaScript and CSS code (CSS code is optional)
+      summary: Generate a link to preview the web app based on uploaded JavaScript, CSS and HTML code (CSS and HTML code is optional)
       operationId: genPreviewUrl
-      description: This endpoint receives 2 string parameters `js` and `css`, for the respective JavaScript and CSS code of the web app, and returns a single string as the URL that can be used to preview the app.
+      description: This endpoint receives 3 string parameters `js`, `css`, `html`, for the respective JavaScript, CSS and HTML code of the web app, and returns a single string as the URL that can be used to preview the app.
       requestBody:
         required: true
         content:
@@ -23,6 +23,9 @@ paths:
                 css:
                   type: string
                   description: The (optional) CSS code of the app
+                html:
+                  type: string
+                  description: 'The (optional) HTML code of the app used for the page skeleton for providing things like placeholder elements to be rendered with VanJS code. Note that, you don''t need to provide the entire HTML document. Just providing inner elements of <body> will be enough. No <script> tag is needed in the HTML code. Sample value: <div id="app"></div>'
               required:
                 - js
       response:
