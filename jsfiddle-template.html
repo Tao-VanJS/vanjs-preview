@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Redirecting...</title>
+</head>
+<body>
+  <form id="redirectForm" action="https://jsfiddle.net/api/post/library/pure/" method="POST">
+    <textarea name="js" style="display: none;">{{js}}</textarea>
+    <textarea name="css" style="display: none;">{{css}}</textarea>
+    <input type="hidden" name="resources" value="https://cdn.jsdelivr.net/gh/vanjs-org/van/public/van-1.2.6.nomodule.min.js">
+  </form>
+  <script>
+    window.onload = () => document.getElementById('redirectForm').submit();
+  </script>
+</body>
+</html>
