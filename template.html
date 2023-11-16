@@ -5,12 +5,10 @@
 </head>
 <body onload="document.getElementById('redirectForm').submit();">
   <form id="redirectForm" action="https://codepen.io/pen/define" method="POST">
-    <input type="hidden" name="data" value={{value}}>
+    <textarea name="data" style="display: none;">{{value}}</textarea>
   </form>
   <script>
-    window.onload = function () {
-      document.getElementById('redirectForm').submit();
-    }
+    window.onload = () => document.getElementById('redirectForm').submit()
   </script>
 </body>
 </html>

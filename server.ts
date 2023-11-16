@@ -2,7 +2,7 @@
 
 const GEN_PREVIEW_URL_PATTERN = new URLPattern({pathname: "/gen-preview-url"})
 const JSFIDDLE_PREVIEW_PATTERN = new URLPattern({pathname: "/jsfiddle/:key"})
-const PREVIEW_PATTERN = new URLPattern({pathname: "/:key"})
+const CODEPEN_PREVIEW_PATTERN = new URLPattern({pathname: "/codepen/:key"})
 
 const kv = await Deno.openKv()
 
@@ -42,7 +42,7 @@ Deno.serve(async req => {
     kv.set([key], data, {expireIn: 86400 * 1000})
     const url = new URL(req.url)
     return new Response(
-      JSON.stringify(`https://${url.hostname}/jsfiddle/${key}`),
+      JSON.stringify(`https://${url.hostname}/codepen/${key}`),
       {
         status: 200,
         headers: {
@@ -71,7 +71,7 @@ Deno.serve(async req => {
     }
   }
   {
-    const match = PREVIEW_PATTERN.exec(req.url)
+    const match = CODEPEN_PREVIEW_PATTERN.exec(req.url)
     if (match) {
       const key = match.pathname.groups.key!
       const {value} = await kv.get<string>([key])
@@ -82,7 +82,7 @@ Deno.serve(async req => {
         js_external: "https://cdn.jsdelivr.net/gh/vanjs-org/van/public/van-1.2.6.nomodule.min.js",
       }
       return new Response(
-        template.replace("{{value}}", JSON.stringify(escapeAttr(JSON.stringify(data)))),
+        template.replace("{{value}}", escapeText(JSON.stringify(data))),
         {status: 200, headers: {"Content-Type": "text/html; charset=utf-8"}})
     }
   }
