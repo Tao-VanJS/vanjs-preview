@@ -84,7 +84,7 @@ Deno.serve(async req => {
       if (!value) return new Response("Invalid or expired link", {status: 404})
       const data = {
         ...JSON.parse(value),
-        js_external: "https://cdn.jsdelivr.net/gh/vanjs-org/van/public/van-1.2.6.nomodule.min.js",
+        js_external: "https://cdn.jsdelivr.net/gh/vanjs-org/van/public/van-1.2.8.nomodule.min.js",
       }
       return new Response(
         template.replace("{{value}}", escapeText(JSON.stringify(data))),
