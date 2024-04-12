@@ -17,8 +17,6 @@ const escapeMap: Record<string, string> = {
 
 const escapeText = (s: string) => s.replace(/[&<>]/g, tag => escapeMap[tag] || tag)
 
-const escapeAttr = (v: string) => v.replaceAll('"', "&quot;")
-
 const jsfiddleTemplate = await Deno.readTextFile("./jsfiddle-template.html")
 const template = await Deno.readTextFile("./template.html")
 const privacy = await Deno.readTextFile("./privacy")
@@ -84,7 +82,7 @@ Deno.serve(async req => {
       if (!value) return new Response("Invalid or expired link", {status: 404})
       const data = {
         ...JSON.parse(value),
-        js_external: "https://cdn.jsdelivr.net/gh/vanjs-org/van/public/van-1.2.8.nomodule.min.js",
+        js_external: "https://cdn.jsdelivr.net/gh/vanjs-org/van/public/van-1.5.0.nomodule.min.js",
       }
       return new Response(
         template.replace("{{value}}", escapeText(JSON.stringify(data))),
